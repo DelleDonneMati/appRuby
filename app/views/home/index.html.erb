@@ -1,0 +1,10 @@
+<h1>Home#index</h1>
+<%= Time.now %>
+<li><%= link_to "Sign Up" %></li>
+<li><%= link_to "Sign In" %></li>
+<li><%= link_to "Sign Out" %></li>
+
+<% if user_signed_in? %>
+You are signed in, current_user.id = <%= current_user.id %><br />
+user_session.keys => <%= user_session.keys %>
+<% end %>

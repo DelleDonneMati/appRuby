@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sell: one
+  product: one
+  item: one
+
+two:
+  sell: two
+  product: two
+  item: two

@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  unicode: MyString
+  descrip: MyString
+  detail: MyString
+  price: MyString
+
+two:
+  unicode: MyString
+  descrip: MyString
+  detail: MyString
+  price: MyString
