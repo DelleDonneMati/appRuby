@@ -1,6 +1,19 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
 
+  def login
+    @user = User.find_by(username: params[:u], passwd: params[:p])  
+    if @user.present?
+      expiration = Time.now.utc + 30.minutes
+      authentication =  Digest::SHA1.hexdigest "#{@user.id}#{@user[:passwd]}#{@user[:username]}#{expiration}"
+      token = Token.new(user_id: @user[:id], authentication: authentication, created_at: Time.now.utc, updated_at: Time.now.utc)
+      token.save
+      render json: token
+    end
+  end
+
+
+
   # GET /users
   def index
     @users = User.all
@@ -46,6 +59,6 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:username, :password)
+      params.permit(:username, :password)
     end
 end

@@ -1,6 +1,57 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :update, :destroy]
 
+  # get '/productos'
+
+  def giveMeProducts
+    if params[:q].present?
+      query = {}
+      if params[:q] == 'scarce'
+          query = Product.getScarce
+      elsif params[:q] == 'all'
+          query = Product.getAll
+      end
+    else 
+      query = Product.getInStock
+    end
+    render json: query.first(25)
+  end
+
+  # get '/productos/:codigo'
+
+  def codProd
+    product = Product.find_by(unicode: params[:codigo])
+    if product.blank?
+      render status: 404 
+    else
+      render json: product
+    end
+  end
+
+  # get '/productos/:codigo/items'
+
+  def prodWithCodeInItems
+    product = Product.find_by(unicode: params[:codigo]) 
+    if product.blank?
+      render status: 404 
+    else
+      items = Item.where(product_id: product.id)
+      render json: items
+    end
+  end
+
+  # post '/productos/:codigo/items
+
+  def createItemsWithProd
+    if params[:cant].present?
+      create = params[:cant]
+      product = Product.find_by(unicode: params[:codigo]) 
+      Product.createItems(product.id, create)   
+    else
+      render status: 406
+    end
+  end
+
   # GET /products
   def index
     @products = Product.all
@@ -46,6 +97,6 @@ class ProductsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def product_params
-      params.require(:product).permit(:unicode, :descrip, :detail, :price, :name)
+      params.permit(:unicode, :descrip, :detail, :price, :name)
     end
 end

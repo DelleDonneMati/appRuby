@@ -16,10 +16,10 @@ ActiveRecord::Schema.define(version: 2019_12_08_132301) do
   enable_extension "plpgsql"
 
   create_table "clients", force: :cascade do |t|
-    t.string "cuit"
-    t.string "name"
+    t.string "cuit", null: false
+    t.string "name", null: false
     t.bigint "type_id", null: false
-    t.string "email"
+    t.string "email", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["type_id"], name: "index_clients_on_type_id"
@@ -27,14 +27,14 @@ ActiveRecord::Schema.define(version: 2019_12_08_132301) do
 
   create_table "items", force: :cascade do |t|
     t.bigint "product_id", null: false
-    t.string "status"
+    t.string "status", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["product_id"], name: "index_items_on_product_id"
   end
 
   create_table "phones", force: :cascade do |t|
-    t.string "number"
+    t.string "number", null: false
     t.bigint "client_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -42,11 +42,11 @@ ActiveRecord::Schema.define(version: 2019_12_08_132301) do
   end
 
   create_table "products", force: :cascade do |t|
-    t.string "unicode"
-    t.string "descrip"
-    t.string "detail"
-    t.string "price"
-    t.string "name"
+    t.string "unicode", null: false
+    t.string "descrip", null: false
+    t.string "detail", null: false
+    t.string "price", null: false
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 2019_12_08_132301) do
   create_table "reserveds", force: :cascade do |t|
     t.bigint "reservation_id", null: false
     t.bigint "item_id", null: false
-    t.decimal "price"
+    t.decimal "price", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["item_id"], name: "index_reserveds_on_item_id"
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 2019_12_08_132301) do
   create_table "solds", force: :cascade do |t|
     t.bigint "sell_id", null: false
     t.bigint "item_id", null: false
-    t.decimal "price"
+    t.decimal "price", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["item_id"], name: "index_solds_on_item_id"
@@ -103,14 +103,14 @@ ActiveRecord::Schema.define(version: 2019_12_08_132301) do
   end
 
   create_table "types", force: :cascade do |t|
-    t.string "descrip"
+    t.string "descrip", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "username"
-    t.string "password"
+    t.string "username", null: false
+    t.string "password", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

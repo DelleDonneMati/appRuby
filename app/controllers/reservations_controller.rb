@@ -1,6 +1,26 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :update, :destroy]
 
+  # get '/reservas'
+
+  def reservNotSold
+    query = Reservation.joins(:client).where(status: 'Pendiente').select(:"reservations.created_at", :name, :total)
+    render json: query
+  end
+
+  #get '/reservas/:id'
+  def reservId
+    res = {}
+    res['Reserva'] = Reservation.findById(params[:id])
+    if res['Reserva'].blank?
+      res['Items'] = Reserved.giveMeItems(params[:id]) if params[:items].present?       
+      res['Venta'] = Sell.giveMeSale(params[:id]) if params[:sale].present?
+      render json: res
+    else 
+      render status: 404
+    end
+  end
+
   # GET /reservations
   def index
     @reservations = Reservation.all
@@ -46,6 +66,6 @@ class ReservationsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def reservation_params
-      params.require(:reservation).permit(:client_id, :user_id, :date, :status, :total)
+      params.permit(:client_id, :user_id, :date, :status, :total)
     end
 end
