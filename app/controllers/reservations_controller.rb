@@ -4,11 +4,11 @@ class ReservationsController < ApplicationController
   # get '/reservas'
 
   def reservNotSold
-    query = Reservation.joins(:client).where(status: 'Pendiente').select(:"reservations.created_at", :name, :total)
+    query = Reservation.joins(:client).where(status: 'Pendiente').select(:"reservations.id", :created_at, :name, :total)
     render json: query
   end
 
-  #get '/reservas/:id'
+  # get '/reservas/:id'
   def reservId
     res = {}
     res['Reserva'] = Reservation.findById(params[:id])
@@ -19,6 +19,16 @@ class ReservationsController < ApplicationController
     else 
       render status: 404
     end
+  end
+
+  # post '/reservas'
+  def createReservation
+
+  end
+
+  # delete '/reservas/:id'
+  def deleteId
+    Reservation.delete(params[:id])
   end
 
   # GET /reservations

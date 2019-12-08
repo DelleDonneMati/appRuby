@@ -21,8 +21,9 @@ Rails.application.routes.draw do
   
   get '/reservas', to: 'reservations#reservNotSold'
   get '/reservas/:id', to: 'reservations#reservId'
-  post '/reservas', to: 'reservations#create'
-  
+  post '/reservas', to: 'reservations#createReservation'
+  delete '/reservas/:id', to:'reservations#deleteId'
+
   get 'ventas/', to: 'sells#allSellsWithUser'
   
   # Probar los parametros de los get desde curl, con curl -x get -d 'parametro'
