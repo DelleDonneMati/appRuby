@@ -2,10 +2,10 @@
 
 one:
   reservation: one
-  product: one
   item: one
+  price: 9.99
 
 two:
   reservation: two
-  product: two
   item: two
+  price: 9.99

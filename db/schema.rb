@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_07_165241) do
+ActiveRecord::Schema.define(version: 2019_12_08_132301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "clients", force: :cascade do |t|
-    t.string "cuit", null: false
-    t.string "name", null: false
+    t.string "cuit"
+    t.string "name"
     t.bigint "type_id", null: false
     t.string "email"
     t.datetime "created_at", precision: 6, null: false
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2019_12_07_165241) do
 
   create_table "items", force: :cascade do |t|
     t.bigint "product_id", null: false
-    t.string "status", null: false
+    t.string "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["product_id"], name: "index_items_on_product_id"
@@ -42,34 +42,34 @@ ActiveRecord::Schema.define(version: 2019_12_07_165241) do
   end
 
   create_table "products", force: :cascade do |t|
-    t.string "unicode", null: false
-    t.string "descrip", null: false
-    t.string "detail", null: false
-    t.string "price", null: false
+    t.string "unicode"
+    t.string "descrip"
+    t.string "detail"
+    t.string "price"
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "name"
   end
 
   create_table "reservations", force: :cascade do |t|
     t.bigint "client_id", null: false
     t.bigint "user_id", null: false
     t.string "date"
+    t.string "status"
+    t.decimal "total"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "status"
     t.index ["client_id"], name: "index_reservations_on_client_id"
     t.index ["user_id"], name: "index_reservations_on_user_id"
   end
 
   create_table "reserveds", force: :cascade do |t|
     t.bigint "reservation_id", null: false
-    t.bigint "product_id", null: false
     t.bigint "item_id", null: false
+    t.decimal "price"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["item_id"], name: "index_reserveds_on_item_id"
-    t.index ["product_id"], name: "index_reserveds_on_product_id"
     t.index ["reservation_id"], name: "index_reserveds_on_reservation_id"
   end
 
@@ -86,13 +86,20 @@ ActiveRecord::Schema.define(version: 2019_12_07_165241) do
 
   create_table "solds", force: :cascade do |t|
     t.bigint "sell_id", null: false
-    t.bigint "product_id", null: false
     t.bigint "item_id", null: false
+    t.decimal "price"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["item_id"], name: "index_solds_on_item_id"
-    t.index ["product_id"], name: "index_solds_on_product_id"
     t.index ["sell_id"], name: "index_solds_on_sell_id"
+  end
+
+  create_table "tokens", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "authentication"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_tokens_on_user_id"
   end
 
   create_table "types", force: :cascade do |t|
@@ -102,8 +109,8 @@ ActiveRecord::Schema.define(version: 2019_12_07_165241) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "username", null: false
-    t.string "password", null: false
+    t.string "username"
+    t.string "password"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -114,12 +121,11 @@ ActiveRecord::Schema.define(version: 2019_12_07_165241) do
   add_foreign_key "reservations", "clients"
   add_foreign_key "reservations", "users"
   add_foreign_key "reserveds", "items"
-  add_foreign_key "reserveds", "products"
   add_foreign_key "reserveds", "reservations"
   add_foreign_key "sells", "clients"
   add_foreign_key "sells", "reservations"
   add_foreign_key "sells", "users"
   add_foreign_key "solds", "items"
-  add_foreign_key "solds", "products"
   add_foreign_key "solds", "sells"
+  add_foreign_key "tokens", "users"
 end

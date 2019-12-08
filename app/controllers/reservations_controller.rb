@@ -1,16 +1,6 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :update, :destroy]
 
-  def reserv
-    @reservation = Reservation.reservationsNoSale
-    render json: @reservation
-  end
-
-  def reservId
-    @reservations = Reservation.reservationsId(params[:code])
-    render json: @reservations
-  end
-
   # GET /reservations
   def index
     @reservations = Reservation.all
@@ -56,7 +46,6 @@ class ReservationsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def reservation_params
-      params.permit(:client_id, :user_id, :date, :status)
+      params.require(:reservation).permit(:client_id, :user_id, :date, :status, :total)
     end
-
 end

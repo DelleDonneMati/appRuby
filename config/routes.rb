@@ -1,15 +1,16 @@
 Rails.application.routes.draw do
-  # root 'application#hello'
+  resources :tokens
   resources :solds
   resources :sells
   resources :reserveds
   resources :reservations
-  resources :users
   resources :items
-  resources :phones
   resources :products
+  resources :users
+  resources :phones
   resources :clients
   resources :types
+  # root 'application#hello'
   post '/usuarios', to: 'users#create'
   post '/sesiones', to: 'users#login'
   get '/productos', to: 'products#giveMeProducts'

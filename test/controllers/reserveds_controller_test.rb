@@ -12,7 +12,7 @@ class ReservedsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create reserved" do
     assert_difference('Reserved.count') do
-      post reserveds_url, params: { reserved: { item_id: @reserved.item_id, product_id: @reserved.product_id, reservation_id: @reserved.reservation_id } }, as: :json
+      post reserveds_url, params: { reserved: { item_id: @reserved.item_id, price: @reserved.price, reservation_id: @reserved.reservation_id } }, as: :json
     end
 
     assert_response 201
@@ -24,7 +24,7 @@ class ReservedsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update reserved" do
-    patch reserved_url(@reserved), params: { reserved: { item_id: @reserved.item_id, product_id: @reserved.product_id, reservation_id: @reserved.reservation_id } }, as: :json
+    patch reserved_url(@reserved), params: { reserved: { item_id: @reserved.item_id, price: @reserved.price, reservation_id: @reserved.reservation_id } }, as: :json
     assert_response 200
   end
 

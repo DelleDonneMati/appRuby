@@ -4,8 +4,12 @@ one:
   client: one
   user: one
   date: MyString
+  status: MyString
+  total: 9.99
 
 two:
   client: two
   user: two
   date: MyString
+  status: MyString
+  total: 9.99

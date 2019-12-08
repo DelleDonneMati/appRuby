@@ -46,6 +46,6 @@ class TypesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def type_params
-      params.permit(:descrip)
+      params.require(:type).permit(:descrip)
     end
 end

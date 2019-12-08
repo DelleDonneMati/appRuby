@@ -1,24 +1,5 @@
-require 'digest/sha1'
-
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-
-  # POST /sesiones
-  def login
-    query = User.login(params[:u],params[:p])
-    if params[:p].present? && query[0]['password'] == params[:p] 
-      session[:id] = query[0]['id'] 
-      session[:expire] = Time.now.strftime("%H%M").to_i+30
-      session[:token] = Digest::SHA1.hexdigest "#{session[:id]}#{params[:p]}#{params[:u]}#{session[:expire]}"
-      render json: session
-    else
-      render json: "#{params[:p].present?} #{params[:u].present?}"
-    end
-  end
-
-  def test
-    render json: session
-  end
 
   # GET /users
   def index
@@ -65,6 +46,6 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.permit(:username, :passwd, :u, :p)
+      params.require(:user).permit(:username, :password)
     end
 end
