@@ -1,6 +1,18 @@
 class SellsController < ApplicationController
   before_action :set_sell, only: [:show, :update, :destroy]
 
+  # get '/ventas'
+  def allSellsWithUser
+    #sells={}
+    #sells = Sell.find_by(user_id: params[:id])
+    sells = Sell.joins(:client,:sold).select(:"Sell.created_at", :"Client.cuit", :"Sold.price")
+    if sells.blank?
+      render status: 404 
+    else
+      render json: sells
+    end
+  end 
+
   # GET /sells
   def index
     @sells = Sell.all
