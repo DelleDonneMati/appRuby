@@ -38,7 +38,7 @@ class SellsController < ApplicationController
       token = params[:authentication]
       user = Token.authenticate(token)
       if user.present?
-        Sell.sell(params, user)
+        Sell.sellCreation(params, user)
       else
         render status: 404
       end

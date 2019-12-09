@@ -3,9 +3,9 @@ class Sell < ApplicationRecord
   belongs_to :user
   belongs_to :reservation
 
-	def self.sell(sale, user)
+	def self.sellCreation(sale, user)
 		enough = {}
-	    sale[:to_sell].each { |k, v| enough[k] = (Product.where(unicode: k).joins(:items).count) > v.to_i}
+	    # sale[:to_sell].each { |k, v| enough[k] = (Product.where(unicode: k).joins(:items).count) > v.to_i}
 	    if enough.all?
       	client = Client.find(sale[:client_id])
   			if client.present?

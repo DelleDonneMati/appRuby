@@ -24,11 +24,27 @@ Este README explica el uso correcto de mi proyecto
 
 * Utilizar CURL
 
-    1. Con curl -X POST -d 'username=Matias&password=DelleDonne' http://localhost:3000/usuarios , crearemos a nuestro usuario
+    1. Con curl -X POST -d 'u=Matias&p=DelleDonne' http://localhost:3000/usuarios , crearemos a nuestro usuario
 
-    2. Con curl -X POST -d 'username=Mati&password=DelleDonne' http://localhost:3000/sesiones ,  para lograr un logueo correcto 
+    2. Con curl -X POST -d 'u=Mati&p=DelleDonne' http://localhost:3000/sesiones ,  para lograr un logueo correcto 
 
-* Apartir de aqui se tendra que utilizar el unicode que nos devuele el POST del punto anterior, ya que hay servicios que requieren token de autenticación
+* Para generar las condiciones de IV, utilizaremos tambien curl
+    * curl -X POST -d 'descrip=IVA_Responsable_Inscripto' http://localhost:3000/types
+    * curl -X POST -d 'descrip=IVA_Responsable_no_Inscripto' http://localhost:3000/types
+    * curl -X POST -d 'descrip=IVA_no_Responsable' http://localhost:3000/types
+    * curl -X POST -d 'descrip=IVA_Sujeto_Exento' http://localhost:3000/types
+    * curl -X POST -d 'descrip=Consumidor_Final' http://localhost:3000/types
+    * curl -X POST -d 'descrip=Responsable_Monotributo' http://localhost:3000/types
+    * curl -X POST -d 'descrip=Sujeto_no_Categorizado' http://localhost:3000/types
+    * curl -X POST -d 'descrip=Proveedor_del_Exterior' http://localhost:3000/types
+    * curl -X POST -d 'descrip=Cliente_del_Exterior' http://localhost:3000/types
+    * curl -X POST -d 'descrip=IVA_Liberado_Ley_Nº_19.640' http://localhost:3000/types
+    * curl -X POST -d 'descrip=IVA_Responsable_Inscripto_Agente_de_Percepción' http://localhost:3000/types
+    * curl -X POST -d 'descrip=Pequeño_Contribuyente_Eventual' http://localhost:3000/types
+    * curl -X POST -d 'descrip=Monotributista_Social' http://localhost:3000/types
+    * curl -X POST -d 'descrip=Pequeño_Contribuyente_Eventual_Social' http://localhost:3000/types
+
+* Apartir de aqui se tendra que utilizar el unicode que nos devuele el POST del punto 2 de "Utilizar CURL", ya que hay servicios que requieren token de autenticación
     
     3. Con curl -d 'unicode=ABC123&descrip=EsRojo&detail=EsGrandeYEsRojo&price=9&name=Tomate' -X POST http://localhost:3000/products , tendremos creado nuestro primer producto 
     
@@ -47,9 +63,11 @@ Este README explica el uso correcto de mi proyecto
 
     9. Con curl -X DELETE -d 'authentication=xxxxx&id=1' http://localhost:3000/reservas/1 , eliminaremos la reserva con identificador 1
 
-    10. Con curl -X GET -d 'authentication=xxxxxx' http://localhost:3000/ventas , tendremos todas las ventas
+    10. Con curl -X POST -d 'authentication=xxxxx&id_client=x&user_id=x&reservation_id=x&'
 
-    11. Con curl -X GET -d 'authentication=xxxxxx' http://localhost:3000/ventas/1 , tendremos la venta con id 1
+    11. Con curl -X GET -d 'authentication=xxxxxx' http://localhost:3000/ventas , tendremos todas las ventas
+
+    12. Con curl -X GET -d 'authentication=xxxxxx' http://localhost:3000/ventas/1 , tendremos la venta con id 1
 
 * Aclaracion: Si alguno de los curls no devuelve algo o es por no tener algo creado o nos devolvera HTTP status 404 Not found
 
