@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   get '/ventas/:id', to: 'sells#sellUser'
   post '/ventas', to: 'sells#newSell'
 
-  get '/authenticate', to: 'tokens#authenticate'
+  get '/authenticate', to: 'tokens#auth'
   
   # Probar los parametros de los get desde curl, con curl -x get -d 'parametro'
   # Los post para crear, estan en el croud ya creados post /products

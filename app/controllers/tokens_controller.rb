@@ -1,7 +1,7 @@
 class TokensController < ApplicationController
   before_action :set_token, only: [:show, :update, :destroy]
 
-  def authenticate
+  def auth
     ans = Token.authenticate(params[:authentication])
     render json: ans
   end
