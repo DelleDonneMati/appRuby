@@ -1,5 +1,12 @@
 class Product < ApplicationRecord
-
+    validates :unicode, presence: true, uniqueness: true
+    validates :descrip, presence: true, length: { maximum: 200 }
+    validates :detail, presence: true
+    validates :price, presence: true
+   validates_each :unicode do |record, attr, value|
+     record.errors.add(attr, 'Debe tener 3 numeros y luego 6 letras') if !(value =~ /^[a-zA-Z]{3}\d{6}$/)
+   end
+    has_many :items
     def self.getScarce
        prods = Product.joins(:items).group(:id).count.select { |k, v| (v > 0) && (v<6) } 
        prods.map { |key, value|  { "#{Product.find(key).name}": value} }
