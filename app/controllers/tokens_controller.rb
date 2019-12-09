@@ -51,6 +51,6 @@ class TokensController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def token_params
-      params.require(:token).permit(:user_id, :authentication)
+      params.permit(:user_id, :authentication)
     end
 end

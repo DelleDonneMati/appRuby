@@ -46,6 +46,6 @@ class ReservedsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def reserved_params
-      params.require(:reserved).permit(:reservation_id, :item_id, :price)
+      params.permit(:reservation_id, :item_id, :price)
     end
 end
