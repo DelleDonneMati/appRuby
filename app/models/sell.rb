@@ -3,49 +3,33 @@ class Sell < ApplicationRecord
   belongs_to :user
   belongs_to :reservation
 
-  # def self.allSellsWithUser(reservation)
-  #   if params[:authentication].present?
-  #     token = params[:authentication]
-  #     user = Token.authenticate(token)
-  #     if user.present?
-  #       sales = Sell.where(user_id: user.id).select(:created_at, :total, :client_id)
-  #       sales = sales.map { |sale| {"Client": "#{Client.find(sale.client_id).name}", "Date": "#{sale.created_at}", "Total": "#{sale.total}"}} 
-  #       render json: sales
-  #     else
-  #       render status: 404
-  #     end
-  #   end
-  # end
-
-  # def  self.sellUser
-  #   if params[:authentication].present?
-  #     token = params[:authentication]
-  #     user = Token.authenticate(token)
-  #     if user.present?
-  #       sales = Sell.find(params[:id])
-  #       sales = {"Client": "#{Client.find(sales.client_id).name}", "Date": "#{sales.created_at}", "Total": "#{sales.total}"}
-  #       if params[:items].present?
-  #         sales[:Items] = Sold.joins(:sell, :item).where("solds.sell_id= 1").select("items.*")
-  #       end
-  #       render json: sales
-  #     else
-  #       render status: 404
-  #     end
-  #   end
-  # end
-
-  # def self.sell
-  #   if params[:authentication].present?
-  #     token = params[:authentication]
-  #     user = Token.authenticate(token)
-  #     if user.present?
-  #       Sell.sell(params, user)
-  #     else
-  #       render status: 404
-  #     end
-  #   else
-  #     render status: 404
-  #   end
-  # end
+	def self.sell(sale, user)
+		enough = {}
+	    sale[:to_sell].each { |k, v| enough[k] = (Product.where(unicode: k).joins(:items).count) > v.to_i}
+	    if enough.all?
+      	client = Client.find(sale[:client_id])
+  			if client.present?
+				total = {}
+		        sale[:to_sell].each { |k, v| total[k] = Product.where(unicode: k).select(:basePrice) } 
+		        total = total.values.flatten.collect { |p| p.basePrice }  
+		        total = total.inject(:+)
+		        time = Time.now.utc
+				selling = Sell.create!(client_id: client.id, user_id: user.id, created_at: time, updated_at: time, total: total)
+		        sale[:to_sell].each do |k, v| 
+		          v.to_i.times do
+		            product = Product.find_by(unicode: k)
+		            item = Item.find_by(product_id: product.id, status: 'Disponible')
+		            Sold.create!(sell_id: selling.id, item_id: item.id, price: product.basePrice)
+		            item.update!(status: 'Vendido')
+		          end
+		        end
+		        selling
+	    	else
+        		{status: 406, message: 'No Existe el Cliente'}  
+      		end
+    	else
+      		{status: 406, message: 'No hay suficiente Stock'}
+    	end
+  end
 
 end

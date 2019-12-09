@@ -26,8 +26,8 @@ Rails.application.routes.draw do
   delete '/reservas/:id', to:'reservations#deleteId'
 
   get '/ventas', to: 'sells#user_sales'
-  #get '/ventas/:id', to: 'sells#sellUser'
-  #post '/ventas', to: 'sells#sell'
+  get '/ventas/:id', to: 'sells#sellUser'
+  post '/ventas', to: 'sells#newSell'
 
   get '/authenticate', to: 'tokens#authenticate'
   

@@ -33,7 +33,7 @@ class SellsController < ApplicationController
     end
   end
 
-  def sell
+  def newSell
     if params[:authentication].present?
       token = params[:authentication]
       user = Token.authenticate(token)
