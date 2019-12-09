@@ -22,9 +22,14 @@ Rails.application.routes.draw do
   get '/reservas', to: 'reservations#reservNotSold'
   get '/reservas/:id', to: 'reservations#reservId'
   post '/reservas', to: 'reservations#createReservation'
+  put '/reservas/:id/vender', to: 'reservations#toSell'
   delete '/reservas/:id', to:'reservations#deleteId'
 
   get 'ventas/', to: 'sells#allSellsWithUser'
+  get '/ventas/:id', to: 'sells#sellUser'
+  post '/ventas', to: 'sells#sell'
+
+  get '/authenticate', to: 'tokens#authenticate'
   
   # Probar los parametros de los get desde curl, con curl -x get -d 'parametro'
   # Los post para crear, estan en el croud ya creados post /products
