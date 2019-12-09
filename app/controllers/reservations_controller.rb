@@ -4,20 +4,26 @@ class ReservationsController < ApplicationController
   # get '/reservas'
 
   def reservNotSold
-    query = Reservation.joins(:client).where(status: 'Pendiente').select(:"reservations.id", :created_at, :name, :total)
-    render json: query
+    user = Token.authenticate(params[:authentication])
+    if user.present?    
+      query = Reservation.joins(:client).where(status: 'Pendiente').select(:"reservations.id", :created_at, :name, :total)
+      render json: query
+    else
+      render status: 404
+    end
   end
 
   # get '/reservas/:id'
   def reservId
     res = {}
     res['Reserva'] = Reservation.findById(params[:id])
-    if res['Reserva'].blank?
+    if res['Reserva'].present?
       res['Items'] = Reserved.giveMeItems(params[:id]) if params[:items].present?       
       res['Venta'] = Sell.giveMeSale(params[:id]) if params[:sale].present?
       render json: res
     else 
       render status: 404
+      #render :json => {:error => "404 Not-Found"}.to_json, :status => 404
     end
   end
 
