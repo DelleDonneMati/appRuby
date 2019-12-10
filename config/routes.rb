@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   resources :reserveds
   resources :reservations
   resources :items
-  resources :products
+  resources :products, path: "productos", only: [:index, :show] do
+    resources :items, only: [:index, :create]
+  end
   resources :users
   resources :phones
   resources :clients
