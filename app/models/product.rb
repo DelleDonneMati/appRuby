@@ -17,13 +17,22 @@ class Product < ApplicationRecord
     end
     
     def self.getInStock
-       prods = Product.joins(:items).group(:id).count.select { |k, v| (v > 0)} 
-       prods.map { |key, value|  { "#{Product.find(key).name}": value} }
+       prods = Product
+         .select("products.*, COUNT(items.id) as items_count")
+         .joins('LEFT JOIN items ON (products.id = items.product_id)')
+         .having('COUNT(items.id) >= 0')
+         .group(:id)
+      #prods = Product.joins(:items).group(:id).count.select { |k, v| (v > 0)} 
+      #prods.map { |key, value|  { "#{Product.find(key).name}": value} }
     end
     
     def self.getAll
-       prods = Product.joins(:items).group(:id).count
-       prods.map { |key, value|  { "#{Product.find(key).name}": value} } 
+      prods = Product
+         .select("products.*, COUNT(items.id) as items_count")
+         .joins('LEFT JOIN items ON (products.id = items.product_id)')
+         .group(:id)
+      #prods = Product.joins(:items).group(:id).count
+      #prods.map { |key, value|  { "#{Product.find(key).name}": value} } 
     end
 
     def self.createItems(product, create)
