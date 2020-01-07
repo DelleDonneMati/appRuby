@@ -8,8 +8,12 @@ class Product < ApplicationRecord
    #  end
     has_many :items
     def self.getScarce
-       prods = Product.joins(:items).group(:id).count.select { |k, v| (v > 0) && (v<6) } 
-       prods.map { |key, value|  { "#{Product.find(key).name}": value} }
+       prods = Product
+        .select("products.*, COUNT(items.id) as items_count")
+        .joins('LEFT JOIN items ON (products.id = items.product_id)')
+        .having('COUNT(items.id) >= 0 AND COUNT(items.id) < 6')
+        .group(:id)#.count.select { |k, v| (v > 0) && (v<6) } 
+       #prods.map { |key, value|  { "#{Product.find(key).name}": value} }
     end
     
     def self.getInStock
