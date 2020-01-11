@@ -6,6 +6,7 @@ class ReservationsController < ApplicationController
   def reservNotSold
     user = Token.authenticate(params[:authentication])
     if user.present?    
+      #query = Reservation.NotSold
       query = Reservation.joins(:client).where(status: 'Pendiente').select(:"reservations.id", :created_at, :name, :total)
       render json: query
     else
