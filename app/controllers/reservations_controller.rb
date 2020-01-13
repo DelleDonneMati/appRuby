@@ -58,6 +58,8 @@ class ReservationsController < ApplicationController
     end
   end
 
+  #PUT /reservas/:id/vender
+  
   def toSell
     user = Token.authenticate(params[:authentication])
     if user.present? 

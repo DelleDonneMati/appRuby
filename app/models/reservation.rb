@@ -4,17 +4,12 @@ class Reservation < ApplicationRecord
 
   def self.notSold
     reserv = Reservation
-      .select("reservations.id, reservation.created_at, reservation.client_id, client.name, reservation.total")
+      .select("reservations.id, reservations.created_at, reservations.client_id, clients.name, reservations.total")
       .joins("INNER JOIN clients ON (reservations.client_id=clients.id)")
       .where("reservations.status='Disponible'")
   end
 
   def self.findById(id)
-    # @connection = ActiveRecord::Base.connection
-    # result = @connection.exec_query("SELECT *
-    #                                    FROM reservations
-    #                                    WHERE id='#{id}'")
-    # return result[0]
     reserv = Reservation
      .select("reservations.*")
      .where("reservations.id = '#{id}'")

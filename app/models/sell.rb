@@ -25,7 +25,7 @@ class Sell < ApplicationRecord
       	client = Client.find(sale[:client_id])
   			if client.present?
 				total = {}
-		        sale[:to_sell].each { |k, v| total[k] = Product.where(unicode: k).select(:basePrice) } 
+		        sale[:to_sell].each { |k, v| total[k] = Product.where(unicode: k).select(:basePrice) } #Ver si cambiar basePrice por price
 		        total = total.values.flatten.collect { |p| p.basePrice }  
 		        total = total.inject(:+)
 		        time = Time.now.utc
