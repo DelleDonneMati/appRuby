@@ -4,21 +4,21 @@ class Sell < ApplicationRecord
   belongs_to :reservation
 
 
-	def self.sellsUser(id_user) 
+	def self.all_by_id(id_user) 
 		sells = Sell
 			.select("sells.created_at, clients.name, sells.total")
-			.joins("LEFT JOIN client ON (sells.client_id = client.id")
-			.where("sells.client_id = '#{id}'")
+			.joins('LEFT JOIN clients ON (sells.client_id = clients.id)')
+			.where("sells.client_id = #{id_user} ")
 	end
 
-	def self.sellsById(id)
+	def self.sells_by_id(id)
 		sells = Sell
 			.select("sells.created_at, clients.name, sells.total")
-			.joins("LEFT JOIN client ON (sells.client_id = client.id")
-			.where("sells.id = '#{id}'")
+			.joins('LEFT JOIN clients ON (sells.client_id = clients.id)')
+			.where("sells.id = #{id}")
 	end
 
-	def self.sellCreation(sale, user)
+	def self.creation(sale, user)
 		enough = {}
 	    # sale[:to_sell].each { |k, v| enough[k] = (Product.where(unicode: k).joins(:items).count) > v.to_i}
 	    if enough.all?

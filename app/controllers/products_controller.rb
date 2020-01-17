@@ -1,18 +1,18 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :update, :destroy]
-
+  before_action :validate_product, only: [:find_produts_in_items_with_unicode, :find_by_unicode]
   # get '/productos'
 
   def index
     if params[:q].present?
       query = {}
       if params[:q] == 'scarce'
-          query = Product.getScarce
+          query = Product.get_scarce
       elsif params[:q] == 'all'
-          query = Product.getAll
+          query = Product.get_all
       end
     else 
-      query = Product.getInStock
+      query = Product.get_in_stock
     end
     render json: query.first(25)
   end
@@ -20,24 +20,14 @@ class ProductsController < ApplicationController
   # get '/productos/:codigo'
 
   def find_by_unicode
-    product = Product.find_by(unicode: params[:codigo])
-    if product.blank?
-      render json: 'status: 404' 
-    else
-      render json: product
-    end
+    render json: @product
   end
 
   # get '/productos/:codigo/items'
 
   def find_produts_in_items_with_unicode
-    product = Product.find_by(unicode: params[:codigo]) 
-    if product.blank?
-      render json: 'status: 404' 
-    else
-      items = Item.where(product_id: product.id)
-      render json: items
-    end
+    items = Item.where(product_id: @product.id)
+    render json: items
   end
 
   # post '/productos/:codigo/items
@@ -91,5 +81,12 @@ class ProductsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def product_params
       params.permit(:unicode, :descrip, :detail, :price, :name)
+    end
+
+    def validate_product
+      @product = Product.find_by(unicode: params[:codigo])
+      if @product.blank?
+       render json: 'status: 404' 
+      end
     end
 end

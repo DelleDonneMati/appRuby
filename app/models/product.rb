@@ -7,7 +7,7 @@ class Product < ApplicationRecord
    #    record.errors.add(attr, 'Debe tener 3 numeros y luego 6 letras') if !(value =~ /^[a-zA-Z]{3}\d{6}$/)
    #  end
     has_many :items
-    def self.getScarce
+    def self.get_scarce
        prods = Product
         .select("products.*, COUNT(items.id) as items_count")
         .joins('LEFT JOIN items ON (products.id = items.product_id)')
@@ -16,7 +16,7 @@ class Product < ApplicationRecord
        #prods.map { |key, value|  { "#{Product.find(key).name}": value} }
     end
     
-    def self.getInStock
+    def self.get_in_stock
        prods = Product
          .select("products.*, COUNT(items.id) as items_count")
          .joins('LEFT JOIN items ON (products.id = items.product_id)')
@@ -26,7 +26,7 @@ class Product < ApplicationRecord
       #prods.map { |key, value|  { "#{Product.find(key).name}": value} }
     end
     
-    def self.getAll
+    def self.get_all
       prods = Product
          .select("products.*, COUNT(items.id) as items_count")
          .joins('LEFT JOIN items ON (products.id = items.product_id)')

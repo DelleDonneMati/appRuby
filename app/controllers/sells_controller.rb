@@ -2,7 +2,7 @@ class SellsController < ApplicationController
   before_action :set_sell, only: [:show, :update, :destroy]
 
   # get '/ventas'
-  def user_sales
+  def index
     if params[:authentication].present?
       token = params[:authentication]
       user = Token.authenticate(token)
@@ -11,12 +11,12 @@ class SellsController < ApplicationController
         sales = sales.map { |sale| {"Client": "#{Client.find(sale.client_id).name}", "Date": "#{sale.created_at}", "Total": "#{sale.total}"}} 
         render json: sales
       else
-        render status: 404
+        render json: {status: 404}
       end
     end
   end 
 
-  def sellUser
+  def sell_user_id
     if params[:authentication].present?
       token = params[:authentication]
       user = Token.authenticate(token)
@@ -28,32 +28,32 @@ class SellsController < ApplicationController
         end
         render json: sales
       else
-        render status: 404
+        render json: {status: 404}
       end
     end
   end
 
-  def newSell
+  def new_sell
     if params[:authentication].present?
       token = params[:authentication]
       user = Token.authenticate(token)
       if user.present?
-        Sell.sellCreation(params, user)
+        Sell.creation(params, user)
       else
-        render status: 404
+        render json: {status: 404}
       end
     else
-      render status: 404
+      render json: {status: 404}
     end
   end
 
 
   # GET /sells
-  def index
-    @sells = Sell.all
+  # def index
+  #   @sells = Sell.all
 
-    render json: @sells
-  end
+  #   render json: @sells
+  # end
 
   # GET /sells/1
   def show

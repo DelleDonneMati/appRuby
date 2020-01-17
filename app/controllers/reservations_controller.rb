@@ -1,17 +1,12 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :update, :destroy]
-
+  before_action :validate_user, only: [:index, :find_by_id, :to_sell, :create_reservation]
   # get '/reservas'
 
-  def index
-    user = Token.authenticate(params[:authentication])
-    if user.present?    
-      # query = Reservation.notSold
-      query = Reservation.joins(:client).where(status: 'Pendiente').select(:"reservations.id", :created_at, :name, :total)
-      render json: query
-    else
-      render jsno: 'status: 404'
-    end
+  def index    
+    # query = Reservation.notSold
+    query = Reservation.joins(:client).where(status: 'Pendiente').select(:"reservations.id", :created_at, :name, :total)
+    render json: query
   end
 
   # get '/reservas/:id'
@@ -23,59 +18,46 @@ class ReservationsController < ApplicationController
       res['Venta'] = Sell.giveMeSale(params[:id]) if params[:sale].present?
       render json: res
     else 
-      render status: 404
+      render json: 'status: 404'
       #render :json => {:error => "404 Not-Found"}.to_json, :status => 404
     end
   end
 
   # post '/reservas'
-  def createReservation
-    user = Token.authenticate(params[:authentication])
-    if user.present?  
-      if params[:client_id].present? && params[:to_reserve].present?
-        response = Reservation.reserve(params, user)
-        render json: response
-      else 
-        render json: {message: 'Missing parameters', status: 406 }
-      end
-    else
-      render status: 404
+  def create_reservation     
+    if params[:client_id].present? && params[:to_reserve].present?
+      response = Reservation.reserve(params, @user)
+      render json: response
+    else 
+      render json: {message: 'Missing parameters', status: 406 }
     end
   end
 
   # delete '/reservas/:id'
   def deleteId
-    user = Token.authenticate(params[:authentication])
-    if user.present?    
-      reserv = Reservation.find(params[:id])
-      if reserv.present? && (reserv.status != 'Vendido')
-        available = Reserved.where(reservation_id: res.id)
-        available.map { |free| Item.find(free.item_id).update!(status: 'Disponible') }
-        Reservation.delete(params[:id]) 
-      end
-    else 
-      render status: 404
+    reserv = Reservation.find(params[:id])
+    if reserv.present? && (reserv.status != 'Vendido')
+      available = Reserved.where(reservation_id: res.id)
+      available.map { |free| Item.find(free.item_id).update!(status: 'Disponible') }
+      Reservation.delete(params[:id]) 
     end
   end
 
   #PUT /reservas/:id/vender
   
-  def toSell
-    user = Token.authenticate(params[:authentication])
-    if user.present? 
-      reserv = Reservation.find(params[:id])
-      if reserv.present?
-        if reserv.status = 'Pendiente'
-          sale = Reservation.sell(res, user)
-          result = sale
-        else
-          result =  {message: 'Ya se ha vendido esta Reserva', status: 406 }  
-        end
+  def to_sell
+    reserv = Reservation.find(params[:id])
+    if reserv.present?
+      if reserv.status = 'Pendiente'
+        sale = Reservation.sell(res, @user)
+        result = sale
       else
-        result = {message: 'No se encontro la Reserva', status: 404 }
+        result =  {message: 'Ya se ha vendido esta Reserva', status: 406 }  
       end
-      render json: result
+    else
+      result = {message: 'No se encontro la Reserva', status: 404 }
     end
+   render json: result 
   end
 
   # GET /reservations
@@ -124,5 +106,12 @@ class ReservationsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def reservation_params
       params.permit(:client_id, :user_id, :date, :status, :total)
+    end
+
+    def validate_user
+      @user = Token.authenticate(params[:authentication])
+      if @user.blank?
+        render json: {status: 404}
+      end
     end
 end
