@@ -3,9 +3,19 @@ Rails.application.routes.draw do
   resources :solds
   resources :sells
   resources :reserveds
-  resources :reservations
+  resources :reservations, path: 'reservas', only: [:index] do
+    collection do
+      get :find_by_id, path: '/:id'
+    end
+  end
   resources :items
-  resources :products
+  resources :products, path: 'productos', only: [:index] do
+    collection do
+      get :find_by_unicode, path: '/:codigo'
+      get :find_produts_in_items_with_unicode, path: '/:codigo/items'
+      post :new_items_with_products, path: '/:codigo/items'
+    end
+  end
   resources :users
   resources :phones
   resources :clients
@@ -14,13 +24,13 @@ Rails.application.routes.draw do
   post '/usuarios', to: 'users#create'
   post '/sesiones', to: 'users#login'
   
-  get '/productos', to: 'products#giveMeProducts'
-  get '/productos/:codigo', to: 'products#codProd'
-  get '/productos/:codigo/items', to: 'products#prodWithCodeInItems'
-  post '/productos/:codigo/items', to: 'products#createItemsWithProd'
+  # get '/productos', to: 'products#giveMeProducts'
+  # get '/productos/:codigo', to: 'products#codProd'
+  # get '/productos/:codigo/items', to: 'products#prodWithCodeInItems'
+  # post '/productos/:codigo/items', to: 'products#createItemsWithProd'
   
-  get '/reservas', to: 'reservations#reservNotSold'
-  get '/reservas/:id', to: 'reservations#reservId'
+  # get '/reservas', to: 'reservations#reservNotSold'
+  # get '/reservas/:id', to: 'reservations#reservId'
   post '/reservas', to: 'reservations#createReservation'
   put '/reservas/:id/vender', to: 'reservations#toSell'
   delete '/reservas/:id', to:'reservations#deleteId'

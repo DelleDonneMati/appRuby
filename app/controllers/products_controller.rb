@@ -3,7 +3,7 @@ class ProductsController < ApplicationController
 
   # get '/productos'
 
-  def giveMeProducts
+  def index
     if params[:q].present?
       query = {}
       if params[:q] == 'scarce'
@@ -19,10 +19,10 @@ class ProductsController < ApplicationController
 
   # get '/productos/:codigo'
 
-  def codProd
+  def find_by_unicode
     product = Product.find_by(unicode: params[:codigo])
     if product.blank?
-      render status: 404 
+      render json: 'status: 404' 
     else
       render json: product
     end
@@ -30,10 +30,10 @@ class ProductsController < ApplicationController
 
   # get '/productos/:codigo/items'
 
-  def prodWithCodeInItems
+  def find_produts_in_items_with_unicode
     product = Product.find_by(unicode: params[:codigo]) 
     if product.blank?
-      render status: 404 
+      render json: 'status: 404' 
     else
       items = Item.where(product_id: product.id)
       render json: items
@@ -42,7 +42,7 @@ class ProductsController < ApplicationController
 
   # post '/productos/:codigo/items
 
-  def createItemsWithProd
+  def new_items_with_products
     if params[:cant].present?
       create = params[:cant]
       product = Product.find_by(unicode: params[:codigo]) 
@@ -50,13 +50,6 @@ class ProductsController < ApplicationController
     else
       render status: 406
     end
-  end
-
-  # GET /products
-  def index
-    @products = Product.all
-
-    render json: @products
   end
 
   # GET /products/1

@@ -3,19 +3,19 @@ class ReservationsController < ApplicationController
 
   # get '/reservas'
 
-  def reservNotSold
+  def index
     user = Token.authenticate(params[:authentication])
     if user.present?    
-      #query = Reservation.NotSold
+      # query = Reservation.notSold
       query = Reservation.joins(:client).where(status: 'Pendiente').select(:"reservations.id", :created_at, :name, :total)
       render json: query
     else
-      render status: 404
+      render jsno: 'status: 404'
     end
   end
 
   # get '/reservas/:id'
-  def reservId
+  def find_by_id
     res = {}
     res['Reserva'] = Reservation.findById(params[:id])
     if res['Reserva'].present?
@@ -79,11 +79,11 @@ class ReservationsController < ApplicationController
   end
 
   # GET /reservations
-  def index
-    @reservations = Reservation.all
+  # def index
+  #   @reservations = Reservation.all
 
-    render json: @reservations
-  end
+  #   render json: @reservations
+  # end
 
   # GET /reservations/1
   def show
