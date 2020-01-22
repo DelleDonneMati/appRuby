@@ -1,7 +1,18 @@
 require 'test_helper'
 
 class SoldTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+
+  setup do
+    @vendido = solds(:one)
+  end
+
+  test "el precio debe ser un numero" do #REVISAR
+    @vendido.price = 'lala'
+    assert @vendido.save
+  end
+
+  test "prueba" do #PRUEBA DE COMPARACION 
+  	assert @vendido.item == Item.first
+  end
+
 end
