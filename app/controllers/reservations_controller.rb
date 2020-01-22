@@ -5,7 +5,7 @@ class ReservationsController < ApplicationController
 
   def index    
     # query = Reservation.notSold
-    query = Reservation.joins(:client).where(status: 'Pendiente').select(:"reservations.id", :created_at, :name, :total)
+    query = Reservation.joins(:client).where(status: 'Disponible').select(:"reservations.id", :created_at, :name, :total)
     render json: query
   end
 
