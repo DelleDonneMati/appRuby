@@ -34,10 +34,10 @@ class ReservationsController < ApplicationController
   end
 
   # delete '/reservas/:id'
-  def deleteId
+  def delete_id
     reserv = Reservation.find(params[:id])
     if reserv.present? && (reserv.status != 'Vendido')
-      available = Reserved.where(reservation_id: res.id)
+      available = Reserved.where(reservation_id: reserv.id)
       available.map { |free| Item.find(free.item_id).update!(status: 'Disponible') }
       Reservation.delete(params[:id]) 
     end
@@ -46,9 +46,9 @@ class ReservationsController < ApplicationController
   #PUT /reservas/:id/vender
   
   def to_sell
-    reserv = Reservation.find(params[:id])
-    if reserv.present?
-      if reserv.status = 'Pendiente'
+    res = Reservation.find(params[:id])
+    if res.present?
+      if res.status = 'Pendiente'
         sale = Reservation.sell(res, @user)
         result = sale
       else

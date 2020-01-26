@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   resources :reservations, path: 'reservas', only: [:index] do
     collection do
       get :find_by_id, path: '/:id'
-      post :create_reservation
+      # post :create_reservation
       put :to_sell, path: '/:id/vender'
       delete :delete_id, path: '/:id'
     end
@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     collection do
       get :find_by_unicode, path: '/:codigo'
       get :find_produts_in_items_with_unicode, path: '/:codigo/items'
-      post :new_items_with_products, path: '/:codigo/items'
+      # post :new_items_with_products, path: '/:codigo/items'
     end
   end
   resources :users
@@ -38,17 +38,17 @@ Rails.application.routes.draw do
   # get '/productos', to: 'products#giveMeProducts'
   # get '/productos/:codigo', to: 'products#codProd'
   # get '/productos/:codigo/items', to: 'products#prodWithCodeInItems'
-  # post '/productos/:codigo/items', to: 'products#createItemsWithProd'
+  post '/productos/:codigo/items', to: 'products#createItemsWithProd'
   
   # get '/reservas', to: 'reservations#reservNotSold'
   # get '/reservas/:id', to: 'reservations#reservId'
-  # post '/reservas', to: 'reservations#createReservation'
-  # put '/reservas/:id/vender', to: 'reservations#toSell'
-  # delete '/reservas/:id', to:'reservations#deleteId'
+  post '/reservas', to: 'reservations#create_reservation'
+  # put '/reservas/:id/vender', to: 'reservations#to_sell'
+  # delete '/reservas/:id', to:'reservations#delete_id'
 
   # get '/ventas', to: 'sells#user_sales'
   # get '/ventas/:id', to: 'sells#sellUser'
-  # post '/ventas', to: 'sells#newSell'
+  post '/ventas', to: 'sells#newSell'
 
    
   # Probar los parametros de los get desde curl, con curl -x get -d 'parametro'
