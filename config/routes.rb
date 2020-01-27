@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :sells, path: 'ventas', only: [:index]do
     collection do
       get :sell_user_id, path: '/:id'
-      post :new_sell
+      # post :new_sell
     end
   end
   resources :reserveds
@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   # get '/productos', to: 'products#giveMeProducts'
   # get '/productos/:codigo', to: 'products#codProd'
   # get '/productos/:codigo/items', to: 'products#prodWithCodeInItems'
-  post '/productos/:codigo/items', to: 'products#createItemsWithProd'
+  post '/productos/:codigo/items', to: 'products#new_items_with_products'
   
   # get '/reservas', to: 'reservations#reservNotSold'
   # get '/reservas/:id', to: 'reservations#reservId'
@@ -48,7 +48,7 @@ Rails.application.routes.draw do
 
   # get '/ventas', to: 'sells#user_sales'
   # get '/ventas/:id', to: 'sells#sellUser'
-  post '/ventas', to: 'sells#newSell'
+  post '/ventas', to: 'sells#new_sell'
 
    
   # Probar los parametros de los get desde curl, con curl -x get -d 'parametro'

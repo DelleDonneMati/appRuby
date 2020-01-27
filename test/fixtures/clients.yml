@@ -1,13 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# one:
-#   cuit: MyString
-#   name: MyString
-#   type: one
-#   email: MyString
+one:
+  cuit: 9149194
+  name: Matias
+  type: one
+  email: mati@hotmail.com
 
-# two:
-#   cuit: MyString
-#   name: MyString
-#   type: two
-#   email: MyString
+two:
+  cuit: 5555555
+  name: Adrian
+  type: two
+  email: adrian@hotmail.com

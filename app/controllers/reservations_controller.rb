@@ -18,7 +18,7 @@ class ReservationsController < ApplicationController
       res['Venta'] = Sell.giveMeSale(params[:id]) if params[:sale].present?
       render json: res
     else 
-      render json: 'status: 404'
+      render json: {status: 404}
       #render :json => {:error => "404 Not-Found"}.to_json, :status => 404
     end
   end

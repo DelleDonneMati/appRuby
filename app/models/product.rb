@@ -36,7 +36,7 @@ class Product < ApplicationRecord
     end
 
     def self.createItems(product, create)
-        create.to_i.times {Item.create!(product_id: product, status: 'Disponible', created_at: Time.now.utc, updated_at: Time.now.utc)}
-     end
+      create.to_i.times {Item.create!(product_id: product, status: 'Disponible', created_at: Time.now.utc, updated_at: Time.now.utc)}
+    end
     
 end

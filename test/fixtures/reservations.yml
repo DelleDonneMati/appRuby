@@ -3,13 +3,13 @@
 one:
   client: one
   user: one
-  date: MyString
-  status: MyString
-  total: 9.99
+  date: 12-12-2020
+  status: Disponible
+  total: 99
 
 two:
   client: two
   user: two
-  date: MyString
-  status: MyString
-  total: 9.99
+  date: 11-11-2020
+  status: Vendido
+  total: 999

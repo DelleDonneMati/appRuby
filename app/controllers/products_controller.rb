@@ -38,7 +38,7 @@ class ProductsController < ApplicationController
       product = Product.find_by(unicode: params[:codigo]) 
       Product.createItems(product.id, create)   
     else
-      render status: 406
+      render json: {status: 406}
     end
   end
 

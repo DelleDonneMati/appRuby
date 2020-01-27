@@ -16,7 +16,4 @@ class ReservationTest < ActiveSupport::TestCase
     assert_not @reserva.save
   end
 
-  
-
-
 end
