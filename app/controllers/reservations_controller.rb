@@ -41,7 +41,7 @@ class ReservationsController < ApplicationController
     end
   end
 
-  #PUT /reservas/:id/vender 
+  #PUT /reservas/:id/vender   
   def to_sell
     res = Reservation.find(params[:id])
     if res.present?
