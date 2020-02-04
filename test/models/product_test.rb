@@ -27,43 +27,48 @@ class ProductTest < ActiveSupport::TestCase
   end
 
   test "la descripcion debe ser un string" do 
-    @producto.descrip = 100
-    assert @producto.save
+    @producto.descrip = "100"
+    assert_not @producto.save
   end
 
   test "el detalle debe ser un string" do 
-    @producto.detail = 100
-    assert @producto.save
+    @producto.detail = "100"
+    assert_not @producto.save
   end
 
   test "el precio debe ser un numero" do 
     @producto.price = 'lala'
-    assert @producto.save
+    assert_not @producto.save
   end
 
   test "codigo unico" do 
-    Product.new(unicode: 'ABC123478', descrip:'', detail:'', price: 0, name:'').save
-    assert_not Product.new(unicode: 'ABC123478', descrip:'', detail:'', price: 0, name:'').valid?, "El Codigo se repite"
+    Product.new(unicode: '123ABCDEF', descrip:'', detail:'', price: 0, name:'').save
+    assert_not Product.new(unicode: '123ABCDEF', descrip:'', detail:'', price: 0, name:'').valid?, "El Codigo se repite"
   end
 
   test "descripción con menos de 200 caracteres" do 
     description = [*('a'..'z')].shuffle[0, 210].join
-    assert_not Product.new(unicode: 'ABC234567', descrip: description, detail:'', price: 0).valid?, "La descripcion es muy larga"
+    assert_not Product.new(unicode: '123ABCDEF', descrip: description, detail:'', price: 0).valid?, "La descripcion es muy larga"
+  end
+
+  test "el codigo tiene menos de 9 caracteres " do
+    assert_equal(["El codigo debe tener 9 caracteres"],
+    Product.create(unicode:"123ABCDEF", descrip:"lala", detail: "lala", price: 45).errors.full_messages)
   end
 
   test "el producto tiene todos los atributos" do 
     assert_not Product.new.valid?
-    assert_not Product.new(unicode: 'ABC123456').valid?
-    assert_not Product.new(unicode: 'ABC123456', descrip:'').valid?
-    assert_not Product.new(unicode: 'ABC123456', descrip:'', detail: '').valid?
-    assert_not Product.new(unicode: 'ABC123456', descrip:'', detail: '', price: 0,name:'').valid?
+    assert_not Product.new(unicode: '123ABCDEF').valid?
+    assert_not Product.new(unicode: '123ABCDEF', descrip:'').valid?
+    assert_not Product.new(unicode: '123ABCDEF', descrip:'', detail: '').valid?
+    assert_not Product.new(unicode: '123ABCDEF', descrip:'', detail: '', price: 0,name:'').valid?
   end
 
   test "in_stock esta bien" do 
-    assert_not Product.get_in_stock.include? Product.find_by(unicode: 'ABC123')
+    assert_not Product.get_in_stock.include? Product.find_by(unicode: '123ABCDEF')
   end
 
   test "scarce esta bien" do 
-    assert_not Product.get_scarce.include? Product.find_by(unicode: 'ABC123')
+    assert_not Product.get_scarce.include? Product.find_by(unicode: '123ABCDEF')
   end
 end

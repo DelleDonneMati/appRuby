@@ -3,48 +3,30 @@ class SellsController < ApplicationController
   before_action :validate_user, only: [:index, :sell_user_id, :new_sell]
   # get '/ventas'
   def index
-    # if params[:authentication].present?
-    #   token = params[:authentication]
-    #   user = Token.authenticate(token)
-      if @user.present?
-        sales = Sell.where(user_id: @user.id).select(:created_at, :total, :client_id)
-        sales = sales.map { |sale| {"Client": "#{Client.find(sale.client_id).name}", "Date": "#{sale.created_at}", "Total": "#{sale.total}"}} 
-        render json: sales
-      # else
-      #   render json: {status: 404}
-      # end
+    if @user.present?
+      sales = Sell.where(user_id: @user.id).select(:created_at, :total, :client_id)
+      sales = sales.map { |sale| {"Client": "#{Client.find(sale.client_id).name}", "Date": "#{sale.created_at}", "Total": "#{sale.total}"}} 
+      render json: sales
     end
   end 
 
   def sell_user_id
-    # if params[:authentication].present?
-    #   token = params[:authentication]
-    #   user = Token.authenticate(token)
-      if @user.present?
-        sales = Sell.find(params[:id])
-        sales = {"Client": "#{Client.find(sales.client_id).name}", "Date": "#{sales.created_at}", "Total": "#{sales.total}"}
-        if params[:items].present?
-          sales[:Items] = Sold.joins(:sell, :item).where("solds.sell_id= 1").select("items.*")
-        end
-        render json: sales
-      # else
-      #   render json: {status: 404}
+    if @user.present?
+      sales = Sell.find(params[:id])
+      sales = {"Client": "#{Client.find(sales.client_id).name}", "Date": "#{sales.created_at}", "Total": "#{sales.total}"}
+      if params[:items].present?
+        sales[:Items] = Sold.joins(:sell, :item).where("solds.sell_id= 1").select("items.*")
       end
+      render json: sales
     end
   end
 
   def new_sell
-    # if params[:authentication].present?
-    #   token = params[:authentication]
-    #   user = Token.authenticate(token)
-      if @user.present?
-        Sell.creation(params, @user)
-      else
-        render json: {status: 404}
-      end
-    # else
-    #   render json: {status: 404}
-    # end
+    if @user.present?
+      Sell.creation(params, @user)
+    else
+      render json: {status: 404}
+    end
   end
 
 
