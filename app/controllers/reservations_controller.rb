@@ -42,7 +42,6 @@ class ReservationsController < ApplicationController
   end
 
   #PUT /reservas/:id/vender
-  
   def to_sell
     res = Reservation.find(params[:id])
     if res.present?
