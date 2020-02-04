@@ -1,26 +1,20 @@
-# require 'test_helper'
-# require 'minitest/spec'
+require 'test_helper'
 
-# describe User do
-#   describe "validity" do
-#     it "should fail - the email is blank" do 
-#       assert_equal(["Email can't be blank"], 
-#       User.create(password: "123456789").errors.full_messages)
-#     end
-#     it "should fail - the password is blank" do 
-#       assert_equal("Password can't be blank", 
-#       User.create(username: "miguel").errors.full_messages[0])
-#     end
-#     it "should fail - the password has less than 6 characters" do
-#       assert_equal(["Password is too short (minimum is 6 characters)"], 
-#       User.create(username: "miguel", password: "123").errors.full_messages)
-#     end
-#     it "should fail - the email exists" do
-#       assert_equal(["Email has already been taken"], 
-#       User.create(username: "matute", password: "12345678").errors.full_messages)
-#     end
-#     it "should pass - everything is OK" do
-#       assert(true, User.create(username: "Pato", password: "12345678").valid?)
-#     end
-#   end
-# end
+class UserTest < ActiveSupport::TestCase
+
+  test "el campo username no puede estar en blanco" do
+    assert_equal(["el campo username no puede estar en blaco"], 
+    User.create(password:1231).errors.full_messages)
+  end
+
+  test "el campo password no puede estar en blanco" do
+    assert_equal(["el campo password no puede estar en blaco"], 
+    User.create(username:"Matias").errors.full_messages)
+  end
+
+  test "usurio correcto" do
+    assert_equal(true, User.create(username:"Matias",password:123232).valid?)
+  end
+
+
+end
