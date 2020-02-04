@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :update, :destroy]
   before_action :validate_product, only: [:find_produts_in_items_with_unicode, :find_by_unicode]
-  # get '/productos'
+  # get '/productos' 
 
   def index
     if params[:q].present?
