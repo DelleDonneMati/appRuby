@@ -1,38 +1,32 @@
 class Product < ApplicationRecord
+   has_many :items
+    validates :unicode, format: { with: /[a-z]{3}\d{6}/, message: 'Debe tener 3 numeros y luego 6 letras'}
     validates :unicode, presence: true, uniqueness: true
     validates :descrip, presence: true, length: { maximum: 200 }
     validates :detail, presence: true
     validates :price, presence: true
-   #  validates_each :unicode do |record, attr, value|
-   #    record.errors.add(attr, 'Debe tener 3 numeros y luego 6 letras') if !(value =~ /^[a-zA-Z]{3}\d{6}$/)
-   #  end
-    has_many :items
+   
     def self.get_scarce
-       prods = Product
-        .select("products.*, COUNT(items.id) as items_count")
-        .joins('LEFT JOIN items ON (products.id = items.product_id)')
-        .having('COUNT(items.id) >= 0 AND COUNT(items.id) < 6')
-        .group(:id)#.count.select { |k, v| (v > 0) && (v<6) } 
-       #prods.map { |key, value|  { "#{Product.find(key).name}": value} }
+     prods = Product
+      .select("products.*, COUNT(items.id) as items_count")
+      .joins('LEFT JOIN items ON (products.id = items.product_id)')
+      .having('COUNT(items.id) >= 0 AND COUNT(items.id) < 6')
+      .group(:id)
     end
     
     def self.get_in_stock
-       prods = Product
-         .select("products.*, COUNT(items.id) as items_count")
-         .joins('LEFT JOIN items ON (products.id = items.product_id)')
-         .having('COUNT(items.id) >= 0')
-         .group(:id)
-      #prods = Product.joins(:items).group(:id).count.select { |k, v| (v > 0)} 
-      #prods.map { |key, value|  { "#{Product.find(key).name}": value} }
+     prods = Product
+      .select("products.*, COUNT(items.id) as items_count")
+      .joins('LEFT JOIN items ON (products.id = items.product_id)')
+      .having('COUNT(items.id) >= 0')
+      .group(:id)
     end
     
     def self.get_all
-      prods = Product
-         .select("products.*, COUNT(items.id) as items_count")
-         .joins('LEFT JOIN items ON (products.id = items.product_id)')
-         .group(:id)
-      #prods = Product.joins(:items).group(:id).count
-      #prods.map { |key, value|  { "#{Product.find(key).name}": value} } 
+     prods = Product
+      .select("products.*, COUNT(items.id) as items_count")
+      .joins('LEFT JOIN items ON (products.id = items.product_id)')
+      .group(:id)
     end
 
     def self.createItems(product, create)
