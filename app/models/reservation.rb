@@ -7,7 +7,6 @@ class Reservation < ApplicationRecord
 
   validates :user, presence: true
   validates :client, presence: true
-  # validate  :item_presence
 
   def self.notSold
     reserv = Reservation
@@ -21,27 +20,6 @@ class Reservation < ApplicationRecord
      .select("reservations.*")
      .where("reservations.id = '#{id}'")
   end
-
-  # def price
-  #   #items.map(&:price).sum
-  #   items.joins(:product).select('products.price').sum('products.price')
-  # end
-
-  # def is_sold
-  #   !sale.nil?
-  # end
-
-  # def sell(user)
-  #   self.sale= Sell.create(user: user, client: client)
-  #   items.each do |i|
-  #     i.price= i.price
-  #     self.sale.items << i
-  #     i.saleable= self.sale
-  #     i.save!
-  #   end
-  #   self.sale.save!
-  #   self.save!
-  # end
   
   def self.reserve(params, user)
   	response = {}

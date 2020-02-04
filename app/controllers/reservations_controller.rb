@@ -4,7 +4,6 @@ class ReservationsController < ApplicationController
   # get '/reservas'
 
   def index    
-    # query = Reservation.notSold
     query = Reservation.joins(:client).where(status: 'Disponible').select(:"reservations.id", :created_at, :name, :total)
     render json: query
   end
@@ -19,7 +18,6 @@ class ReservationsController < ApplicationController
       render json: res
     else 
       render json: {status: 404}
-      #render :json => {:error => "404 Not-Found"}.to_json, :status => 404
     end
   end
 
@@ -59,13 +57,6 @@ class ReservationsController < ApplicationController
     end
    render json: result 
   end
-
-  # GET /reservations
-  # def index
-  #   @reservations = Reservation.all
-
-  #   render json: @reservations
-  # end
 
   # GET /reservations/1
   def show
