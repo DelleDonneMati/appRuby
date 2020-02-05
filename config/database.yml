@@ -80,7 +80,7 @@ test:
 #
 production:
   <<: *default
-  database: appRuby_production
-  username: pela
-  password: Matd1206
+  database: d3cphs5hdsrl0k
+  username: fsgckayaegnoen
+  password: 625d2c6aa7b949eec7fbe9daec5f8dbcdf1f314125b32b98b9a7f53367881eb6
   # password: <%= ENV['APPRUBY_DATABASE_PASSWORD'] %>
