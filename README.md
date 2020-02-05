@@ -1,24 +1,20 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Este README explica el uso de la app
 
-Things you may want to cover:
+Para tener la base de datos cargada tendremos que hace:
+	heroku run rails db:migrate db:seed
 
-* Ruby version
+Para obtener el token de autenticacion tendremos que hacer
+	curl -X POST -d 'u=Matias&p=DelleDonne' https://rubyttps.herokuapp.com/sesiones
 
-* System dependencies
+Luego el token en el campo authentication se tendra que usar en todas las rutas (excepto POST /usuarios y POST /sesiones)
 
-* Configuration
+Ejemplo:
 
-* Database creation
+GET /productos?authentication="xxxxxxx"
+GET /reservas/1?authentication="xxxxxxx"
 
-* Database initialization
+La ejecucion de los test estando parados en /appRuby ejecutar 
+	rails test test/models/product_test.rb
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
