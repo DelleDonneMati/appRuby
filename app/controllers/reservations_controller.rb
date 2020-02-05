@@ -45,7 +45,7 @@ class ReservationsController < ApplicationController
   def to_sell
     res = Reservation.find(params[:id])
     if res.present?
-      if res.status = 'Pendiente'
+      if res.status = 'Disponible'
         sale = Reservation.sell(res, @user)
         result = sale
       else
