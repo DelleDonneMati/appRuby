@@ -1,13 +1,15 @@
 Rails.application.routes.draw do
   resources :tokens
   resources :solds
+  resources :sells
   resources :sells, path: 'ventas', only: [:index]do
     collection do
       get :sell_user_id, path: '/:id'
     end
   end
   resources :reserveds
-  resources :reservations, path: 'reservas', only: [:index] do
+  resources :reservations
+  resources :reservations, path: 'reservas' do
     collection do
       get :find_by_id, path: '/:id'
       put :to_sell, path: '/:id/vender'
@@ -15,6 +17,7 @@ Rails.application.routes.draw do
     end
   end
   resources :items
+  resources :products
   resources :products, path: 'productos', only: [:index] do
     collection do
       get :find_by_unicode, path: '/:codigo'

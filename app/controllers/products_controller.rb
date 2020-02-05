@@ -1,6 +1,7 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :update, :destroy]
   before_action :validate_product, only: [:find_produts_in_items_with_unicode, :find_by_unicode]
+  before_action :validate_user, only: [:index, :find_produts_in_items_with_unicode, :find_by_unicode]
   # get '/productos'     
 
   def index
@@ -87,6 +88,12 @@ class ProductsController < ApplicationController
       @product = Product.find_by(unicode: params[:codigo])
       if @product.blank?
        render json: 'status: 404' 
+      end
+    end
+    def validate_user
+      @user = Token.authenticate(params[:authentication])
+      if @user.blank?
+       render json: {status: 404}
       end
     end
 end
