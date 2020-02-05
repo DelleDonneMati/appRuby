@@ -52,8 +52,7 @@ class ProductTest < ActiveSupport::TestCase
   end
 
   test "el codigo tiene menos de 9 caracteres " do
-    assert_equal(["El codigo debe tener 9 caracteres"],
-    Product.create(unicode:"123ABCDEF", descrip:"lala", detail: "lala", price: 45).errors.full_messages)
+    assert_not Product.new(unicode:"12ABC", descrip:"lala", detail: "lala", price: 45).valid?, "El codigo debe tener 9 caracteres"
   end
 
   test "el producto tiene todos los atributos" do 
