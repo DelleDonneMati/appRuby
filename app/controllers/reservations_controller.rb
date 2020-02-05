@@ -11,10 +11,10 @@ class ReservationsController < ApplicationController
   # get '/reservas/:id'
   def find_by_id
     res = {}
-    res['Reserva'] = Reservation.findById(params[:id])
+    res['Reserva'] = Reservation.find_by_id(params[:id])
     if res['Reserva'].present?
-      res['Items'] = Reserved.giveMeItems(params[:id]) if params[:items].present?       
-      res['Venta'] = Sell.giveMeSale(params[:id]) if params[:sale].present?
+      res['Items'] = Reserved.give_me_items(params[:id]) if params[:items].present?       
+      res['Venta'] = Sell.joins(:reservation, :client, :user).select(:name, :username, :reservation_id, :created_at)
       render json: res
     else 
       render json: {status: 404}

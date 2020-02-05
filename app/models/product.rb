@@ -32,5 +32,11 @@ class Product < ApplicationRecord
     def self.createItems(product, create)
       create.to_i.times {Item.create!(product_id: product, status: 'Disponible', created_at: Time.now.utc, updated_at: Time.now.utc)}
     end
-    
+   
+   def self.enough(needed)
+    enough = {}
+    needed.each { |k, v| enough[k] = (Product.productStock(k) > v.to_i) }
+    !enough.value?(false)
+  end
+ 
 end

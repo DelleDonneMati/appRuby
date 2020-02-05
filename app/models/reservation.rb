@@ -8,38 +8,31 @@ class Reservation < ApplicationRecord
   validates :user, presence: true
   validates :client, presence: true
 
-  def self.notSold
+  def self.not_sold
     reserv = Reservation
       .select("reservations.id, reservations.created_at, reservations.client_id, clients.name, reservations.total")
       .joins("INNER JOIN clients ON (reservations.client_id=clients.id)")
       .where("reservations.status='Disponible'")
   end
 
-  def self.findById(id)
+  def self.find_by_id(id)
     reserv = Reservation
      .select("reservations.*")
      .where("reservations.id = '#{id}'")
   end
   
-  def self.reserve(params, user)
-  	response = {}
-  	enough = {}
-    params[:to_reserve].each { |k, v| enough[k] = (Product.where(unicode: k).joins(:items).count) > v.to_i}
-    if enough.all?
-      client = Client.find(params[:client_id])
-  		if client.present?
-        total = {}
-        params[:to_reserve].each { |k, v| total[k] = Product.where(unicode: k).select(:basePrice) } 
-        total = total.values.flatten.collect { |p| p.basePrice }  
-        total = total.inject(:+)
+def self.reserve(params, user)
+    if Product.enough(params[:to_paramserve])
+      if Client.find(params[:client_id]).pparamsent?
+        total = Product.total_for(params[:to_paramserve])
         time = Time.now.utc
-				reservation = Reservation.create!(client_id: client.id, user_id: user.id, created_at: time, updated_at: time, status: 'Pendiente', total: total)
+        paramservation = paramservation.create!(client_id: params[:client_id], user_id: user.id, created_at: time, updated_at: time, status: 'Pendiente', total: total)
         params[:to_reserve].each do |k, v| 
-          v.to_i.times do
-            product = Product.find_by(unicode: k)
-            item = Item.find_by(product_id: product.id, status: 'Disponible')
+          product = Product.find_by(unicode: k)
+          items = Item.where(product_id: product.id, status: 'Disponible').first(v.to_i)
+          items.each do |item|
             Reserved.create!(reservation_id: reservation.id, item_id: item.id, price: product.basePrice)
-            item.update!(status: 'Reservado')
+            Item.reserve(item)
           end
         end
         reservation

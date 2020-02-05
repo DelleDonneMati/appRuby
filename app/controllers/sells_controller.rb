@@ -22,10 +22,12 @@ class SellsController < ApplicationController
   end
 
   def new_sell
-    if @user.present?
-      Sell.creation(params, @user)
-    else
-      render json: {status: 404}
+    if Product.enough(params[:to_sell])
+      if @user.present?
+       Sell.creation(params, @user)
+     else
+       render json: {status: 404}
+     end
     end
   end
 
